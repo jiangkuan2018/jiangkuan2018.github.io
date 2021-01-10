@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jiangkuan2018.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="跨域资源共享（cross-origin resource sharing），是一种基于HTTP头的机制，该机制通过允许服务器标示除了他自己以外的其他的origin（域、协议、端口），这样浏览器可以访问加载这些资源。跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器的跨源资源的预检请求。在预检中，浏览器发送的头中标示有HTTP方法和真实请求会用到的头">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨源资源共享CORS">
+<meta property="og:url" content="https://jiangkuan2018.github.io/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/">
+<meta property="og:site_name" content="揽明月">
+<meta property="og:description" content="跨域资源共享（cross-origin resource sharing），是一种基于HTTP头的机制，该机制通过允许服务器标示除了他自己以外的其他的origin（域、协议、端口），这样浏览器可以访问加载这些资源。跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器的跨源资源的预检请求。在预检中，浏览器发送的头中标示有HTTP方法和真实请求会用到的头">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-09T11:52:45.000Z">
+<meta property="article:modified_time" content="2021-01-10T10:29:23.536Z">
+<meta property="article:author" content="jiangkuan">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jiangkuan2018.github.io/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-cn'
+  };
+</script>
+
+  <title>跨源资源共享CORS | 揽明月</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-166057856-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-166057856-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">揽明月</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          跨源资源共享CORS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-09 19:52:45" itemprop="dateCreated datePublished" datetime="2021-01-09T19:52:45+08:00">2021-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-10 18:29:23" itemprop="dateModified" datetime="2021-01-10T18:29:23+08:00">2021-01-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>跨域资源共享（cross-origin resource sharing），是一种基于HTTP头的机制，该机制通过允许服务器标示除了他自己以外的其他的origin（域、协议、端口），这样浏览器可以访问加载这些资源。跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器的跨源资源的预检请求。在预检中，浏览器发送的头中标示有HTTP方法和真实请求会用到的头<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">MDN 跨源资源共享</a></p>
+</blockquote>
+<p>实现CORS机制的关键是服务器设置，当客户端发起跨源请求时会自动添加一些请求头（如果是复杂请求会先发一次option请求，这种行为叫做CORS预检请求），服务器会根据这些头信息决定是否要处理这次跨源请求。</p>
+<p>客户端发起当请求分为简单请求和复杂请求</p>
+<h2 id="简单请求和预检请求"><a href="#简单请求和预检请求" class="headerlink" title="简单请求和预检请求"></a>简单请求和预检请求</h2><ol>
+<li>此次请求是使用的GET、HEAD或者POST</li>
+<li>HTTP的头信息是以下几种<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-language</li>
+<li>Last-Event-ID</li>
+<li>Content-Type: 只限于applocation/x-www-form-urlencoded、mutipart/form-data、text/plain</li>
+</ul>
+</li>
+</ol>
+<p>如果满足上述条件就被成为简单请求，如果不满足就是预检请求</p>
+<h2 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h2><p>如果发出去的请求是一个简单请求浏览器会在HTTP请求头中增加一个origin字段，标示当前的源（协议 域名 端口），服务器会根据这个值决定是否处理这个请求。</p>
+<p>浏览器会根据响应头的<code>Access-Control-Allow-Origin</code>字段的值判断服务器是否正常处理了CORS请求</p>
+<h2 id="预检请求"><a href="#预检请求" class="headerlink" title="预检请求"></a>预检请求</h2><p>预检请求需要首先使用OPTIONS方法进行一次通讯，把此次的CORS请求的信息交给服务器检查， 由此决定客户端是否要发起真实的CORS请求。</p>
+<h2 id="附带身份凭证的请求"><a href="#附带身份凭证的请求" class="headerlink" title="附带身份凭证的请求"></a>附带身份凭证的请求</h2><p>一般来说CORS请求不会携带cookie，需要将XMLHttpRequest的withCredentials属性设置为true，请求才会把cookie带上，而服务端则需要在相应头中设置<code>Access-Control-Allow-Credentials: true</code>，如果没有设置，那么请求的响应内容不会返回给发送方。</p>
+<p>对于携带cookie的CORS请求，服务器不可以将<code>Access-Control-Allow-Origin</code>的值设置为<code>*</code>，这是因为请求的首部中携带了 Cookie 信息，如果 Access-Control-Allow-Origin 的值为“*”，请求将会失败。而将 Access-Control-Allow-Origin 的值设置为请求的源，则请求将成功执行。</p>
+<h2 id="CORS机制涉及到的HTTP响应首部字段"><a href="#CORS机制涉及到的HTTP响应首部字段" class="headerlink" title="CORS机制涉及到的HTTP响应首部字段"></a>CORS机制涉及到的HTTP响应首部字段</h2><h3 id="Access-Control-Allow-Origin"><a href="#Access-Control-Allow-Origin" class="headerlink" title="Access-Control-Allow-Origin"></a>Access-Control-Allow-Origin</h3><p>参数值指定了允许访问资源的origin，对于不需要携带cookie的请求可以把该字段设置为<code>*</code>，这表示将接受所有Origin的访问。如果服务端指定了具体的域名，那么响应首部的Vary字段的值必须包含Origin。</p>
+<h3 id="Access-Control-Expose-Headers"><a href="#Access-Control-Expose-Headers" class="headerlink" title="Access-Control-Expose-Headers"></a>Access-Control-Expose-Headers</h3><p>跨源访问时，XMLHttpRequest对象的getResponseHeader()方法只能拿到一些最基本的响应头，Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragme，如果要访问其他的头信息，则需要服务器设置Expose-Headers的值。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Access-Control-Expose-Headers</span>: X-My-Custom-Header, X-Another-Custom-Header</span><br></pre></td></tr></table></figure>
+<p>这样浏览器就能够通过getResponseHeader访问X-My-Custom-Header和 X-Another-Custom-Header 响应头了。</p>
+<h3 id="Access-Control-Max-Age"><a href="#Access-Control-Max-Age" class="headerlink" title="Access-Control-Max-Age"></a>Access-Control-Max-Age</h3><p>用来指定预检请求的结果能够被缓存多久。表示preflight请求的结果在多少秒内有效。</p>
+<h3 id="Access-Control-Allow-Credentials"><a href="#Access-Control-Allow-Credentials" class="headerlink" title="Access-Control-Allow-Credentials"></a>Access-Control-Allow-Credentials</h3><p>一般来说CORS请求不会携带cookie，需要将XMLHttpRequest的withCredentials属性设置为true，请求才会把cookie带上，而服务端则需要在相应头中设置<code>Access-Control-Allow-Credentials: true</code>，如果没有设置，那么请求的响应内容不会返回给发送方。</p>
+<h3 id="Access-Control-Allow-Methods"><a href="#Access-Control-Allow-Methods" class="headerlink" title="Access-Control-Allow-Methods"></a>Access-Control-Allow-Methods</h3><p>Access-Control-Allow-Methods首部字段用于预检请求当响应，其指明了实际请求允许当HTTP方法</p>
+<h3 id="Access-Control-Allow-Headers"><a href="#Access-Control-Allow-Headers" class="headerlink" title="Access-Control-Allow-Headers"></a>Access-Control-Allow-Headers</h3><p>Access-Control-Allow-Headers用于预检请求的响应。其指明了实际请求允许携带的首部字段</p>
+<h2 id="HTTP请求首部字段"><a href="#HTTP请求首部字段" class="headerlink" title="HTTP请求首部字段"></a>HTTP请求首部字段</h2><p>请求的首部字段无须手动设置，当发起跨源请求时浏览器会自动设置这些头信息。</p>
+<h3 id="Origin"><a href="#Origin" class="headerlink" title="Origin"></a>Origin</h3><p>表明预检请求或实际请求的源</p>
+<h3 id="Access-Control-Request-Method"><a href="#Access-Control-Request-Method" class="headerlink" title="Access-Control-Request-Method"></a>Access-Control-Request-Method</h3><p>将实际请求使用的方法告诉服务器</p>
+<h3 id="Access-Control-Request-Headers"><a href="#Access-Control-Request-Headers" class="headerlink" title="Access-Control-Request-Headers"></a>Access-Control-Request-Headers</h3><p>将实际请求所携带的首部字段告诉服务器</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/03/promise%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95all%E3%80%81allSettled%E3%80%81any%E3%80%81race/" rel="prev" title="promise的静态方法all、allSettled、any、race">
+      <i class="fa fa-chevron-left"></i> promise的静态方法all、allSettled、any、race
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单请求和预检请求"><span class="nav-number">1.</span> <span class="nav-text">简单请求和预检请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单请求"><span class="nav-number">2.</span> <span class="nav-text">简单请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预检请求"><span class="nav-number">3.</span> <span class="nav-text">预检请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附带身份凭证的请求"><span class="nav-number">4.</span> <span class="nav-text">附带身份凭证的请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CORS机制涉及到的HTTP响应首部字段"><span class="nav-number">5.</span> <span class="nav-text">CORS机制涉及到的HTTP响应首部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Allow-Origin"><span class="nav-number">5.1.</span> <span class="nav-text">Access-Control-Allow-Origin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Expose-Headers"><span class="nav-number">5.2.</span> <span class="nav-text">Access-Control-Expose-Headers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Max-Age"><span class="nav-number">5.3.</span> <span class="nav-text">Access-Control-Max-Age</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Allow-Credentials"><span class="nav-number">5.4.</span> <span class="nav-text">Access-Control-Allow-Credentials</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Allow-Methods"><span class="nav-number">5.5.</span> <span class="nav-text">Access-Control-Allow-Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Allow-Headers"><span class="nav-number">5.6.</span> <span class="nav-text">Access-Control-Allow-Headers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP请求首部字段"><span class="nav-number">6.</span> <span class="nav-text">HTTP请求首部字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Origin"><span class="nav-number">6.1.</span> <span class="nav-text">Origin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Request-Method"><span class="nav-number">6.2.</span> <span class="nav-text">Access-Control-Request-Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Access-Control-Request-Headers"><span class="nav-number">6.3.</span> <span class="nav-text">Access-Control-Request-Headers</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">jiangkuan</p>
+  <div class="site-description" itemprop="description">hello</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jiangkuan2018" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jiangkuan2018" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiangkuan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>
