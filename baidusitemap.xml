@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jiangkuan2018.github.io/2021/01/16/JavaScript%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96%EF%BC%88currying%EF%BC%89/</loc>
+    <lastmod>2021-01-16</lastmod>
+  </url>
+  <url>
     <loc>https://jiangkuan2018.github.io/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/</loc>
     <lastmod>2021-01-10</lastmod>
   </url>
