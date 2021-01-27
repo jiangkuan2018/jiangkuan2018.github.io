@@ -158,6 +158,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2020/10/05/toString%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/05/toString%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">toString方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-05 13:10:33" itemprop="dateCreated datePublished" datetime="2020-10-05T13:10:33+08:00">2020-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-12 14:17:39" itemprop="dateModified" datetime="2020-10-12T14:17:39+08:00">2020-10-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>每个对象都有一个 toString() 方法，当该对象被表示为一个文本值时，或者一个对象以预期的字符串方式引用时自动调用。默认情况下，toString() 方法被每个 Object 对象继承。如果此方法在自定义对象中未被覆盖，toString() 返回 “[object type]”，其中 type 是对象的类型。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString#描述" target="_blank" rel="noopener">MDN</a></p>
+</blockquote>
+<p>object对象的<code>toString</code>方法返回<code>[object Object]</code>，当我们使<code>delete String.prototype.toString</code>删除字符串对象原型上的toString方法之后，调用字符串的toString方法会返回<code>[object String]</code>是因为字符串原型上重写了toSting方法，删除之后就会调用到 Object 对象中的toString方法，String是继承至Object对象的<br>每一个内置对象的原型都可以重写 toString方法，如果没有重写那么就会直接使用Object对象里的。使用 toString方法做对象检测就是直接调用<code>Object.prototype.toString</code>方法，使用call调用被检测的对象作为参数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str2 = <span class="string">'abc'</span></span><br><span class="line"><span class="built_in">console</span>.log(str2.toString()) <span class="comment">// 'abc'</span></span><br><span class="line"><span class="keyword">delete</span> <span class="built_in">String</span>.prototype.toString</span><br><span class="line"><span class="built_in">console</span>.log(str2.toString()) <span class="comment">// [object String]</span></span><br></pre></td></tr></table></figure>
+<p>现在我们知道了Object是js中所有类型的父类，而js中所有类型都有继承到Object.prototype.toString方法<br>那么我们现在来看一下js中各种类型是怎么重写toString方法的。<br>数据类型<br>Undefined<br>Null<br>String<br>Number<br>Boolean<br>Object<br>Symbol<br>基于Object类型，JS还实现了其他常用的对象子类型，引用类型：引用类型是一种数据结构，用于将数据和功能组织在一起。ps（引用类型不是类，但是也差不多啦）<br>Object<br>Array<br>Function<br>Date<br>RegExp<br>下面三种为基本包装类型，使用构造函数创建的基本包装类型在有必要时会自动展开，直接使用创建的值，这些是js引擎直接处理的<br>Boolean<br>Number<br>String</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2020/09/21/%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0Array-prototype-splice/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -498,7 +568,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
