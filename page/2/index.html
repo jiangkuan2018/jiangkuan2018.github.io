@@ -158,6 +158,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/01/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/01/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86%E5%92%8C%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/" class="post-title-link" itemprop="url">深度优先遍历和广度优先遍历</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-01 23:28:54 / Modified: 23:31:15" itemprop="dateCreated datePublished" datetime="2021-01-01T23:28:54+08:00">2021-01-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>深度优先遍历 递归版本</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dfs1 = <span class="function">(<span class="params">node, nodeList = []</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (node !== <span class="literal">null</span>) &#123;</span><br><span class="line">    nodeList.push(node)</span><br><span class="line">    <span class="keyword">const</span> children = node.children || []</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; children.length; i++) &#123;</span><br><span class="line">      dfs1(children[i], nodeList) <span class="comment">// 展开子节点</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nodeList</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>深度优先遍历 非递归实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dfs2 = <span class="function">(<span class="params">node</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> nodes = []</span><br><span class="line">  <span class="keyword">let</span> stack = [] <span class="comment">// 栈：先进后出</span></span><br><span class="line">  <span class="keyword">if</span> (node) &#123;</span><br><span class="line">    stack.push(node) <span class="comment">// 第一个元素进来</span></span><br><span class="line">    <span class="keyword">while</span> (stack.length) &#123;</span><br><span class="line">      <span class="keyword">let</span> item = stack.pop() <span class="comment">// 弹出最后一个元素</span></span><br><span class="line">      <span class="keyword">let</span> children = item.children <span class="comment">// 获取子元素</span></span><br><span class="line">      nodes.push(item) <span class="comment">// 将元素放进结果集</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = children.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="comment">// for循环是从反向遍历，最后一个元素先进入栈内，第一个元素在栈的最外层</span></span><br><span class="line">        <span class="comment">// while循环再次循环时，pop会取到第一个元素，因为第一个元素是最后入栈的</span></span><br><span class="line">        <span class="comment">// 然后再开展子元素，子元素被遍历时会添加到栈内。</span></span><br><span class="line">        <span class="comment">// 第一个元素被取出来之后进入的元素是第一个元素的子元素，while再次循环时取到的就是第一个子元素的children</span></span><br><span class="line">        <span class="comment">// 使用栈的特性完成深度优先遍历</span></span><br><span class="line">        stack.push(children[i])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nodes</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>广度优先遍历</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> bfs = <span class="function">(<span class="params">node</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> nodes = []</span><br><span class="line">  <span class="keyword">let</span> queue = [] <span class="comment">// 广度优先遍历使用队列的特性</span></span><br><span class="line">  <span class="keyword">if</span> (node) &#123;</span><br><span class="line">    queue.push(node)</span><br><span class="line">    <span class="keyword">while</span>(queue.length) &#123;</span><br><span class="line">      <span class="keyword">let</span> item = queue.shift() <span class="comment">// 取数组第一项</span></span><br><span class="line">      <span class="keyword">let</span> children = item.children || []</span><br><span class="line">      nodes.push(item) <span class="comment">// 元素放入结果集</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; children.length; i++) &#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * for 循环正向循环，将元素放入队列中，第一个元素就是当前元素的第一个children</span></span><br><span class="line"><span class="comment">         * while循环时会从队首取值然后将队首的子元素加到队列到末尾</span></span><br><span class="line"><span class="comment">         * 靠近队首的是最先被添加进去的，每次消费都是将前面的一级子元素添加到队列里</span></span><br><span class="line"><span class="comment">         * 以此实现广度优先遍历</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        queue.push(children[i])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nodes</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2020/12/22/%E8%A3%85%E9%A5%B0%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -641,7 +705,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
