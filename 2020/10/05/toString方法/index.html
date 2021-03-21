@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -206,10 +206,10 @@
 
       
         <blockquote>
-<p>每个对象都有一个 toString() 方法，当该对象被表示为一个文本值时，或者一个对象以预期的字符串方式引用时自动调用。默认情况下，toString() 方法被每个 Object 对象继承。如果此方法在自定义对象中未被覆盖，toString() 返回 “[object type]”，其中 type 是对象的类型。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString#描述" target="_blank" rel="noopener">MDN</a></p>
+<p>每个对象都有一个 toString() 方法，当该对象被表示为一个文本值时，或者一个对象以预期的字符串方式引用时自动调用。默认情况下，toString() 方法被每个 Object 对象继承。如果此方法在自定义对象中未被覆盖，toString() 返回 “[object type]”，其中 type 是对象的类型。<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString#描述">MDN</a></p>
 </blockquote>
 <p>object对象的<code>toString</code>方法返回<code>[object Object]</code>，当我们使<code>delete String.prototype.toString</code>删除字符串对象原型上的toString方法之后，调用字符串的toString方法会返回<code>[object String]</code>是因为字符串原型上重写了toSting方法，删除之后就会调用到 Object 对象中的toString方法，String是继承至Object对象的<br>每一个内置对象的原型都可以重写 toString方法，如果没有重写那么就会直接使用Object对象里的。使用 toString方法做对象检测就是直接调用<code>Object.prototype.toString</code>方法，使用call调用被检测的对象作为参数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str2 = <span class="string">'abc'</span></span><br><span class="line"><span class="built_in">console</span>.log(str2.toString()) <span class="comment">// 'abc'</span></span><br><span class="line"><span class="keyword">delete</span> <span class="built_in">String</span>.prototype.toString</span><br><span class="line"><span class="built_in">console</span>.log(str2.toString()) <span class="comment">// [object String]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str2 = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(str2.toString()) <span class="comment">// &#x27;abc&#x27;</span></span><br><span class="line"><span class="keyword">delete</span> <span class="built_in">String</span>.prototype.toString</span><br><span class="line"><span class="built_in">console</span>.log(str2.toString()) <span class="comment">// [object String]</span></span><br></pre></td></tr></table></figure>
 <p>现在我们知道了Object是js中所有类型的父类，而js中所有类型都有继承到Object.prototype.toString方法<br>那么我们现在来看一下js中各种类型是怎么重写toString方法的。<br>数据类型<br>Undefined<br>Null<br>String<br>Number<br>Boolean<br>Object<br>Symbol<br>基于Object类型，JS还实现了其他常用的对象子类型，引用类型：引用类型是一种数据结构，用于将数据和功能组织在一起。ps（引用类型不是类，但是也差不多啦）<br>Object<br>Array<br>Function<br>Date<br>RegExp<br>下面三种为基本包装类型，使用构造函数创建的基本包装类型在有必要时会自动展开，直接使用创建的值，这些是js引擎直接处理的<br>Boolean<br>Number<br>String</p>
 
     </div>
@@ -304,7 +304,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -158,6 +158,144 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/02/28/v8%E5%BF%AB%E5%B1%9E%E6%80%A7%E5%92%8C%E6%85%A2%E5%B1%9E%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/28/v8%E5%BF%AB%E5%B1%9E%E6%80%A7%E5%92%8C%E6%85%A2%E5%B1%9E%E6%80%A7/" class="post-title-link" itemprop="url">v8快属性和慢属性</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-28 23:07:06" itemprop="dateCreated datePublished" datetime="2021-02-28T23:07:06+08:00">2021-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-03-02 13:00:03" itemprop="dateModified" datetime="2021-03-02T13:00:03+08:00">2021-03-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>数字属性应该按照索引值大小升序排列<br>字符串属性根据创建时的顺序升序排列</p>
+<p>数字属性在v8中称为排序属性 elements<br>字符串属性称为常规属性 properties</p>
+<p>在v8内部为了有效地提升存储和访问这两种属性的性能，分别使用了两个线性数据结构来分别保存排序属性和常规属性,同时 v8 将部分常规属性直接存储到对象本身，我们把这称为对象内属性 (in-object properties)，不过对象内属性的数量是固定的，默认是 10 个。</p>
+<p>快属性：保存在线性数据结构中的属性</p>
+<p>因为线性数据结构中只需要通过索引即可以访问到属性，虽然访问线性结构的速度快，但是如果从线性结构中添加或者删除大量的属性时，则执行效率会非常低，这主要因为会产生大量时间和内存开销因此，如果一个对象的属性过多时，V8 就会采取另外一种存储策略，那就是“慢属性”策略，但慢属性的对象内部会有独立的非线性数据结构 (字典) 作为属性存储容器。所有的属性元信息不再是线性存储的，而是直接保存在属性字典中。</p>
+<p>慢属性：一个对象的属性过多时，V8 就会采取另外一种存储策略，那就是“慢属性”策略。字典结构</p>
+<p>如果对象中的属性过多时，或者存在反复添加或者删除属性的操作，那么 V8 就会将线性的存储模式降级为非线性的字典存储模式，这样虽然降低了查找速度，但是却提升了修改对象的属性的速度。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/02/22/0-1-0-2%E4%B8%8D%E7%AD%89%E4%BA%8E0-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/22/0-1-0-2%E4%B8%8D%E7%AD%89%E4%BA%8E0-3/" class="post-title-link" itemprop="url">0.1+0.2不等于0.3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-22 18:49:28" itemprop="dateCreated datePublished" datetime="2021-02-22T18:49:28+08:00">2021-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-25 17:43:21" itemprop="dateModified" datetime="2021-02-25T17:43:21+08:00">2021-02-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>十进制转二进制的储存和运算过程中 0.1 和 0.2是无穷尽的，无法用二进制精准表达。</p>
+<p>JavaScript采用的是IEEE 754双精度标准，能够有效储存的位数是52位，<br>所以就需要舍入操作，造成精度丢失。另外0.1于0.2相加做对介、求和、舍入过程也会产生精度丢失。</p>
+<p>由于计算机底层存储都是基于二进制的，需要事先由十进制转换为二进制存储与运算，这整个转换过程中，类似于 0.1、0.2 这样的数是无穷尽的，无法用二进制数精确表示。JavaScript 采用的是 IEEE 754 双精确度标准，能够有效存储的位数为 52 位，所以就需要做舍入操作，这无可避免的会引起精度丢失。另外我们在 0.1 与 0.2 相加做对阶、求和、舍入过程中也会产生精度的丢失。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/02/04/React%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6%E5%92%8C%E9%9D%9E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -202,7 +340,7 @@
 <p>我们可以把两者结合起来，使React的state成为唯一数据源（表单元素自身维护记录的值变成使用React的state）。渲染表单的React组件还控制着用户输入过程中表单发生的操作。被React以这种方式控制取值的表单输入元素就叫做受控组件</p>
 <p>对于受控组件来说，输入的值始终由 React 的 state 驱动</p>
 <h1 id="非受控组件"><a href="#非受控组件" class="headerlink" title="非受控组件"></a>非受控组件</h1><p>使用<code>React.createRef()</code>保存dom元素，然后在dom元素上读取输入元素的数据，使用defaultValue和defaultChecked为元素设置默认值，不可以使用value。</p>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UncontrolledNameForm</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props)</span><br><span class="line">    <span class="keyword">this</span>.input = React.createRef() <span class="comment">// 创建react ref 保存input dom实例</span></span><br><span class="line">    <span class="keyword">this</span>.checkbox = React.createRef()</span><br><span class="line">  &#125;</span><br><span class="line">  handleSubmit = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    alert(<span class="string">'A name was submitted: '</span>+ <span class="keyword">this</span>.input.current.value)</span><br><span class="line">    e.preventDefault()</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;form onSubmit=&#123;<span class="keyword">this</span>.handleSubmit&#125;&gt;</span><br><span class="line">        &lt;label&gt;</span><br><span class="line">          Name:</span><br><span class="line">          &lt;input defaultValue=<span class="string">"Bob"</span> type=<span class="string">"text"</span> ref=&#123;<span class="keyword">this</span>.input&#125;/&gt;</span><br><span class="line">          &lt;input type=<span class="string">"checkbox"</span> defaultChecked=&#123;<span class="literal">true</span>&#125; ref=&#123;<span class="keyword">this</span>.checkbox&#125;/&gt;</span><br><span class="line">        &lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">        &lt;input type="submit" value="提交"/</span>&gt;</span><br><span class="line">      &lt;<span class="regexp">/form&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UncontrolledNameForm</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(props)</span><br><span class="line">    <span class="built_in">this</span>.input = React.createRef() <span class="comment">// 创建react ref 保存input dom实例</span></span><br><span class="line">    <span class="built_in">this</span>.checkbox = React.createRef()</span><br><span class="line">  &#125;</span><br><span class="line">  handleSubmit = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    alert(<span class="string">&#x27;A name was submitted: &#x27;</span>+ <span class="built_in">this</span>.input.current.value)</span><br><span class="line">    e.preventDefault()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;form onSubmit=&#123;<span class="built_in">this</span>.handleSubmit&#125;&gt;</span><br><span class="line">        &lt;label&gt;</span><br><span class="line">          Name:</span><br><span class="line">          &lt;input defaultValue=<span class="string">&quot;Bob&quot;</span> type=<span class="string">&quot;text&quot;</span> ref=&#123;<span class="built_in">this</span>.input&#125;/&gt;</span><br><span class="line">          &lt;input type=<span class="string">&quot;checkbox&quot;</span> defaultChecked=&#123;<span class="literal">true</span>&#125; ref=&#123;<span class="built_in">this</span>.checkbox&#125;/&gt;</span><br><span class="line">        &lt;/label&gt;</span><br><span class="line">        &lt;input type=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;提交&quot;</span>/&gt;</span><br><span class="line">      &lt;/form&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>受控组件和非受控组件都有其优点。你可以在根据业务场景选择，如果你的表单处理的业务场景比较简单可以直接使用非受控组件。不用顾虑太多</p>
 <table>
@@ -250,7 +388,7 @@
 </tr>
 </tbody></table>
 <h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><blockquote>
-<p><a href="https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/" target="_blank" rel="noopener">Controlled and uncontrolled form inputs in React don’t have to be complicated</a></p>
+<p><a target="_blank" rel="noopener" href="https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/">Controlled and uncontrolled form inputs in React don’t have to be complicated</a></p>
 </blockquote>
 
       
@@ -378,7 +516,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isEmpty</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(obj) || <span class="keyword">typeof</span> obj === <span class="string">'string'</span> || obj <span class="keyword">instanceof</span> <span class="built_in">String</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.length === <span class="number">0</span> <span class="comment">// 检查数组和字符串类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(obj <span class="keyword">instanceof</span> <span class="built_in">Map</span> || obj <span class="keyword">instanceof</span> <span class="built_in">Set</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.size === <span class="number">0</span> <span class="comment">// 检查Map和Set 类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.toString.call(obj) === <span class="string">'[object Object]'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(obj).length === <span class="number">0</span> <span class="comment">// 检查key的数量</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// 不合法的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isEmpty</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(obj) || <span class="keyword">typeof</span> obj === <span class="string">&#x27;string&#x27;</span> || obj <span class="keyword">instanceof</span> <span class="built_in">String</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.length === <span class="number">0</span> <span class="comment">// 检查数组和字符串类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(obj <span class="keyword">instanceof</span> <span class="built_in">Map</span> || obj <span class="keyword">instanceof</span> <span class="built_in">Set</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.size === <span class="number">0</span> <span class="comment">// 检查Map和Set 类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.toString.call(obj) === <span class="string">&#x27;[object Object]&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(obj).length === <span class="number">0</span> <span class="comment">// 检查key的数量</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// 不合法的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -423,7 +561,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-01-23 14:43:30 / Modified: 14:57:59" itemprop="dateCreated datePublished" datetime="2021-01-23T14:43:30+08:00">2021-01-23</time>
+              <time title="Created: 2021-01-23 14:43:30 / Modified: 15:28:56" itemprop="dateCreated datePublished" datetime="2021-01-23T14:43:30+08:00">2021-01-23</time>
             </span>
 
           
@@ -438,10 +576,10 @@
 
       
           <h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>多次执行事件函数只执行一次，在单位时间内触发的函数不会直接执行，当超过单位时间后再执行一次函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, timeout</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    clearTimeout(timer) <span class="comment">// cancel上次的定时器然后重新开始计时</span></span><br><span class="line">    timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">    &#125;, timeout);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, timeout</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timer) <span class="comment">// cancel上次的定时器然后重新开始计时</span></span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">    &#125;, timeout);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h2><p>在函数持续触发的场景，节流可以控制函数在单位时间内的执行周期。ms参数代表了可以多少毫秒执行一次事件函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, ms</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 闭包保存变量</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">let</span> isThtottled = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> saveArgs = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> saveThis = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">wrapper</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isThtottled) &#123;</span><br><span class="line">      saveArgs = <span class="built_in">arguments</span></span><br><span class="line">      saveThis = <span class="keyword">this</span></span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">      clearTimeout(timer)</span><br><span class="line">    &#125;</span><br><span class="line">    fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>) <span class="comment">// 第一次执行直接可以执行事件函数</span></span><br><span class="line">    isThtottled = <span class="literal">true</span> <span class="comment">// 打开标志位</span></span><br><span class="line">    timer = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="comment">// 打开定时器，倒计时执行事件函数</span></span><br><span class="line">      isThtottled = <span class="literal">false</span> <span class="comment">// 关闭定时器</span></span><br><span class="line">      <span class="keyword">if</span> (saveArgs) &#123; <span class="comment">// 事件函数的参数</span></span><br><span class="line">        wrapper.apply(saveThis, saveArgs) <span class="comment">// 关闭标志位然后递归调用</span></span><br><span class="line">        saveArgs = saveThis = <span class="literal">null</span> <span class="comment">// 执行完事件函数释放变量</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, ms);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> wrapper</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, ms</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 闭包保存变量</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">let</span> isThtottled = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> saveArgs = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> saveThis = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">wrapper</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isThtottled) &#123;</span><br><span class="line">      saveArgs = <span class="built_in">arguments</span></span><br><span class="line">      saveThis = <span class="built_in">this</span></span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">      <span class="built_in">clearTimeout</span>(timer)</span><br><span class="line">    &#125;</span><br><span class="line">    fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>) <span class="comment">// 第一次执行直接可以执行事件函数</span></span><br><span class="line">    isThtottled = <span class="literal">true</span> <span class="comment">// 打开标志位</span></span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123; <span class="comment">// 打开定时器，倒计时执行事件函数</span></span><br><span class="line">      isThtottled = <span class="literal">false</span> <span class="comment">// 关闭定时器</span></span><br><span class="line">      <span class="keyword">if</span> (saveArgs) &#123; <span class="comment">// 事件函数的参数</span></span><br><span class="line">        wrapper.apply(saveThis, saveArgs) <span class="comment">// 关闭标志位然后递归调用</span></span><br><span class="line">        saveArgs = saveThis = <span class="literal">null</span> <span class="comment">// 执行完事件函数释放变量</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, ms);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> wrapper</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -502,7 +640,7 @@
       
           <p>loader，它是一个转换器，将A文件进行编译成B文件，比如：将A.less转换为A.css，单纯的文件转换过程。</p>
 <p>plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务 </p>
-<p><a href="https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/308#issuecomment-548634513" target="_blank" rel="noopener">reference in github</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/308#issuecomment-548634513">reference in github</a></p>
 
       
     </div>
@@ -563,7 +701,7 @@
       
           <p>js函数柯里化的原理：用闭包把参数保存起来，当参数的数量足够执行函数了，就开始执行函数</p>
 <p>代码示例：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">curry</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= func.length) &#123; </span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 如果传入的参数大于或者等于函数的形参个数 直接调用函数</span></span><br><span class="line"><span class="comment">       * 函数的length属性是形参的个数</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">return</span> func.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 返回一个函数用来接受参数</span></span><br><span class="line"><span class="comment">       * 把接受来的参数与上一次的函数合并，传递给curried</span></span><br><span class="line"><span class="comment">       * 利用偏函数，每次调用都会保存上次调用传递的参数，直到参数满足函数形参的个数</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args2</span>) </span>&#123; <span class="comment">// 如果函数执行收集的参数不够就会继续返回偏函数（利用闭包保存函数变量）</span></span><br><span class="line">        <span class="keyword">return</span> curried.apply(<span class="keyword">this</span>, args.concat(args2))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">curry</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= func.length) &#123; </span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 如果传入的参数大于或者等于函数的形参个数 直接调用函数</span></span><br><span class="line"><span class="comment">       * 函数的length属性是形参的个数</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">return</span> func.apply(<span class="built_in">this</span>, args)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 返回一个函数用来接受参数</span></span><br><span class="line"><span class="comment">       * 把接受来的参数与上一次的函数合并，传递给curried</span></span><br><span class="line"><span class="comment">       * 利用偏函数，每次调用都会保存上次调用传递的参数，直到参数满足函数形参的个数</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args2</span>) </span>&#123; <span class="comment">// 如果函数执行收集的参数不够就会继续返回偏函数（利用闭包保存函数变量）</span></span><br><span class="line">        <span class="keyword">return</span> curried.apply(<span class="built_in">this</span>, args.concat(args2))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -628,7 +766,7 @@
 
       
           <blockquote>
-<p>跨域资源共享（cross-origin resource sharing），是一种基于HTTP头的机制，该机制通过允许服务器标示除了他自己以外的其他的origin（域、协议、端口），这样浏览器可以访问加载这些资源。跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器的跨源资源的预检请求。在预检中，浏览器发送的头中标示有HTTP方法和真实请求会用到的头<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">MDN 跨源资源共享</a></p>
+<p>跨域资源共享（cross-origin resource sharing），是一种基于HTTP头的机制，该机制通过允许服务器标示除了他自己以外的其他的origin（域、协议、端口），这样浏览器可以访问加载这些资源。跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器的跨源资源的预检请求。在预检中，浏览器发送的头中标示有HTTP方法和真实请求会用到的头<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS">MDN 跨源资源共享</a></p>
 </blockquote>
 <p>实现CORS机制的关键是服务器设置，当客户端发起跨源请求时会自动添加一些请求头（如果是复杂请求会先发一次option请求，这种行为叫做CORS预检请求），服务器会根据这些头信息决定是否要处理这次跨源请求。</p>
 <p>客户端发起当请求分为简单请求和复杂请求</p>
@@ -651,7 +789,7 @@
 <p>对于携带cookie的CORS请求，服务器不可以将<code>Access-Control-Allow-Origin</code>的值设置为<code>*</code>，这是因为请求的首部中携带了 Cookie 信息，如果 Access-Control-Allow-Origin 的值为“*”，请求将会失败。而将 Access-Control-Allow-Origin 的值设置为请求的源，则请求将成功执行。</p>
 <h2 id="CORS机制涉及到的HTTP响应首部字段"><a href="#CORS机制涉及到的HTTP响应首部字段" class="headerlink" title="CORS机制涉及到的HTTP响应首部字段"></a>CORS机制涉及到的HTTP响应首部字段</h2><h3 id="Access-Control-Allow-Origin"><a href="#Access-Control-Allow-Origin" class="headerlink" title="Access-Control-Allow-Origin"></a>Access-Control-Allow-Origin</h3><p>参数值指定了允许访问资源的origin，对于不需要携带cookie的请求可以把该字段设置为<code>*</code>，这表示将接受所有Origin的访问。如果服务端指定了具体的域名，那么响应首部的Vary字段的值必须包含Origin。</p>
 <h3 id="Access-Control-Expose-Headers"><a href="#Access-Control-Expose-Headers" class="headerlink" title="Access-Control-Expose-Headers"></a>Access-Control-Expose-Headers</h3><p>跨源访问时，XMLHttpRequest对象的getResponseHeader()方法只能拿到一些最基本的响应头，Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragme，如果要访问其他的头信息，则需要服务器设置Expose-Headers的值。</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Access-Control-Expose-Headers</span>: X-My-Custom-Header, X-Another-Custom-Header</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Expose-Headers: X-My-Custom-Header, X-Another-Custom-Header</span><br></pre></td></tr></table></figure>
 <p>这样浏览器就能够通过getResponseHeader访问X-My-Custom-Header和 X-Another-Custom-Header 响应头了。</p>
 <h3 id="Access-Control-Max-Age"><a href="#Access-Control-Max-Age" class="headerlink" title="Access-Control-Max-Age"></a>Access-Control-Max-Age</h3><p>用来指定预检请求的结果能够被缓存多久。表示preflight请求的结果在多少秒内有效。</p>
 <h3 id="Access-Control-Allow-Credentials"><a href="#Access-Control-Allow-Credentials" class="headerlink" title="Access-Control-Allow-Credentials"></a>Access-Control-Allow-Credentials</h3><p>一般来说CORS请求不会携带cookie，需要将XMLHttpRequest的withCredentials属性设置为true，请求才会把cookie带上，而服务端则需要在相应头中设置<code>Access-Control-Allow-Credentials: true</code>，如果没有设置，那么请求的响应内容不会返回给发送方。</p>
@@ -725,163 +863,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，顺序跟iterable的顺序保持一致；如果这个新的promise对象触发了失败状态，他会把iterable里第一个触发失败的promise对象的错误信息作为他的失败错误信息。Promise.all方法常用于处理多个promise对象的状态集合。</span><br><span class="line">全部成功了执行回调</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;Promise.allSettled(iterable)</span><br></pre></td></tr></table></figure>
-
+          <p><code>Promise.all(iterable)</code></p>
+<p>这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，顺序跟iterable的顺序保持一致；如果这个新的promise对象触发了失败状态，他会把iterable里第一个触发失败的promise对象的错误信息作为他的失败错误信息。Promise.all方法常用于处理多个promise对象的状态集合。<br>全部成功了执行回调</p>
+<p><code>Promise.allSettled(iterable)</code></p>
 <p>等到所有的promises都以敲定（settled）（每个promise都以兑现（fulfilled：实现了））或者已拒绝（rejected）<br>全部执行结束了执行then，不管promises的执行结果是什么，都会返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">接受一个Promise对象的集合，当其中的一个promise成功，就会返回那个成功的promise的值</span><br><span class="line">只要集合里的任意一个promise执行成功就会执行then方法</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;Promise.race(iterable)</span><br></pre></td></tr></table></figure>
-
+<p><code>Promise.any(iterable)</code></p>
+<p>接受一个Promise对象的集合，当其中的一个promise成功，就会返回那个成功的promise的值<br>只要集合里的任意一个promise执行成功就会执行then方法</p>
+<p><code>Promise.race(iterable)</code></p>
 <p>race 函数返回一个 Promise，它将与第一个传递的 promise 相同的完成方式被完成。它可以是完成（ resolves），也可以是失败（rejects），这要取决于第一个完成的方式是两个中的哪个。<br>只要集合里的任意一个promise执行结束，就会执行then</p>
 <p>all：全部成功<br>allSettled：全部执行结束<br>any：任意一个成功<br>race：任意一个执行结束</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/02/BFC%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/BFC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">BFC概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-02 21:19:52" itemprop="dateCreated datePublished" datetime="2021-01-02T21:19:52+08:00">2021-01-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-03 20:57:11" itemprop="dateModified" datetime="2021-01-03T20:57:11+08:00">2021-01-03</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="常见定位方案"><a href="#常见定位方案" class="headerlink" title="常见定位方案"></a>常见定位方案</h3><ul>
-<li>普通流 (normal flow)<blockquote>
-<p>在普通流中，元素按照其在 HTML 中的先后位置至上而下布局，在这个过程中，行内元素水平排列，直到当行被占满然后换行，块级元素则会被渲染为完整的一个新行，除非另外指定，否则所有元素默认都是普通流定位，也可以说，普通流中元素的位置由该元素在 HTML 文档中的位置决定。</p>
-</blockquote>
-<h3 id="浮动-float"><a href="#浮动-float" class="headerlink" title="浮动 (float)"></a>浮动 (float)</h3><blockquote>
-<p>在浮动布局中，元素首先按照普通流的位置出现，然后根据浮动的方向尽可能的向左边或右边偏移，其效果与印刷排版中的文本环绕相似。</p>
-</blockquote>
-<h3 id="绝对定位-absolute-positioning"><a href="#绝对定位-absolute-positioning" class="headerlink" title="绝对定位 (absolute positioning)"></a>绝对定位 (absolute positioning)</h3><blockquote>
-<p>在绝对定位布局中，元素会整体脱离普通流，因此绝对定位元素不会对其兄弟元素造成影响，而元素具体的位置由绝对定位的坐标决定。</p>
-</blockquote>
-<h3 id="BFC概念"><a href="#BFC概念" class="headerlink" title="BFC概念"></a>BFC概念</h3>英文全称Block Formatting Context（块级格式化上下文）属于普通流，是 W3C CSS2.1 规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。<br>可以把 BFC 理解为一个封闭的大箱子，箱子内部的元素无论如何翻江倒海，都不会影响到外部。<h3 id="触发BFC"><a href="#触发BFC" class="headerlink" title="触发BFC"></a>触发BFC</h3>BFC可以简单理解为某个元素的一个css属性，只不过这个属性不能被开发者显示的修改，拥有这个属性的元素对内部元素和外部元素表现出一些特性<br>触发条件或者说哪些元素会生成BFC</li>
-</ul>
-<ol>
-<li>跟元素，即HTMl元素</li>
-<li>float的值不为none</li>
-<li>overflow的值不为visible</li>
-<li>display的值为inline-block、table-cell、table-caption</li>
-<li>position的值为absolute或者fixed</li>
-</ol>
-<h3 id="BFC布局规则"><a href="#BFC布局规则" class="headerlink" title="BFC布局规则"></a>BFC布局规则</h3><ul>
-<li>内部的Box会在垂直方向，一个接一个地放置。</li>
-<li>Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠</li>
-<li>每个元素的margin box的左边， 与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。</li>
-<li>BFC的区域不会与float box重叠。<br>BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。</li>
-<li>计算BFC的高度时，浮动元素也参与计算</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/02/%E4%BA%A4%E9%80%9A%E7%81%AF%E9%97%AE%E9%A2%98Promise%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/02/%E4%BA%A4%E9%80%9A%E7%81%AF%E9%97%AE%E9%A2%98Promise%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">交通灯问题Promise实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-01-02 11:10:11 / Modified: 11:10:42" itemprop="dateCreated datePublished" datetime="2021-01-02T11:10:11+08:00">2021-01-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>题目：红灯三秒亮一次，绿灯一秒亮一次，黄灯2秒亮一次；如何让三个灯不断交替重复亮灯？（用 Promse 实现）</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">red</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'red'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">green</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'green'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">yellow</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'yellow'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> trafficLight = [&#123;<span class="attr">timer</span>: <span class="number">1000</span>, <span class="attr">handle</span>: red&#125;, &#123;<span class="attr">timer</span>: <span class="number">2000</span>, <span class="attr">handle</span>: green&#125;, &#123;<span class="attr">timer</span>: <span class="number">3000</span>, <span class="attr">handle</span>: yellow&#125;]</span><br><span class="line"><span class="keyword">const</span> warper = <span class="function"><span class="keyword">function</span>(<span class="params">_cb</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    _cb()</span><br><span class="line">    resolve()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">running</span>(<span class="params">index = <span class="number">0</span></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    warper(trafficLight[index].handle).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      index++</span><br><span class="line">      running(index &gt; <span class="number">2</span> ? <span class="number">0</span> : index)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;, trafficLight[index].timer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">running()</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -965,7 +956,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

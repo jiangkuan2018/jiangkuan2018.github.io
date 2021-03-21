@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"jiangkuan2018.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="12345这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，顺序跟iterable的顺序">
+  <meta name="description" content="Promise.all(iterable) 这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返">
 <meta property="og:type" content="article">
 <meta property="og:title" content="promise的静态方法all、allSettled、any、race">
 <meta property="og:url" content="https://jiangkuan2018.github.io/2021/01/03/promise%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95all%E3%80%81allSettled%E3%80%81any%E3%80%81race/">
 <meta property="og:site_name" content="揽明月">
-<meta property="og:description" content="12345这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，顺序跟iterable的顺序">
+<meta property="og:description" content="Promise.all(iterable) 这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-03T12:59:11.000Z">
 <meta property="article:modified_time" content="2021-01-09T12:42:17.148Z">
@@ -205,11 +205,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，顺序跟iterable的顺序保持一致；如果这个新的promise对象触发了失败状态，他会把iterable里第一个触发失败的promise对象的错误信息作为他的失败错误信息。Promise.all方法常用于处理多个promise对象的状态集合。</span><br><span class="line">全部成功了执行回调</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;Promise.allSettled(iterable)</span><br></pre></td></tr></table></figure>
-
+        <p><code>Promise.all(iterable)</code></p>
+<p>这个方法返回一个新的Promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立刻触发该promise对象的失败。这个新的promise对象在触发成功状态以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，顺序跟iterable的顺序保持一致；如果这个新的promise对象触发了失败状态，他会把iterable里第一个触发失败的promise对象的错误信息作为他的失败错误信息。Promise.all方法常用于处理多个promise对象的状态集合。<br>全部成功了执行回调</p>
+<p><code>Promise.allSettled(iterable)</code></p>
 <p>等到所有的promises都以敲定（settled）（每个promise都以兑现（fulfilled：实现了））或者已拒绝（rejected）<br>全部执行结束了执行then，不管promises的执行结果是什么，都会返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">接受一个Promise对象的集合，当其中的一个promise成功，就会返回那个成功的promise的值</span><br><span class="line">只要集合里的任意一个promise执行成功就会执行then方法</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;Promise.race(iterable)</span><br></pre></td></tr></table></figure>
-
+<p><code>Promise.any(iterable)</code></p>
+<p>接受一个Promise对象的集合，当其中的一个promise成功，就会返回那个成功的promise的值<br>只要集合里的任意一个promise执行成功就会执行then方法</p>
+<p><code>Promise.race(iterable)</code></p>
 <p>race 函数返回一个 Promise，它将与第一个传递的 promise 相同的完成方式被完成。它可以是完成（ resolves），也可以是失败（rejects），这要取决于第一个完成的方式是两个中的哪个。<br>只要集合里的任意一个promise执行结束，就会执行then</p>
 <p>all：全部成功<br>allSettled：全部执行结束<br>any：任意一个成功<br>race：任意一个执行结束</p>
 
@@ -305,7 +307,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
