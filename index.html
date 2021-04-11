@@ -158,6 +158,68 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/04/11/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/11/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">单例模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-11 17:14:25" itemprop="dateCreated datePublished" datetime="2021-04-11T17:14:25+08:00">2021-04-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>保证一个类仅有一个实例，并提供一个访问他的全局访问点，多次创建实例的时候不会再开辟新的内存空间去创建对象，会一直返回第一次创建的对象</p>
+<h3 id="使用代理实现单例模式"><a href="#使用代理实现单例模式" class="headerlink" title="使用代理实现单例模式"></a>使用代理实现单例模式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateDiv</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">html</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.html = html</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">init</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.html)</span><br><span class="line">    <span class="comment">// const div = document.createElement(&#x27;div&#x27;)</span></span><br><span class="line">    <span class="comment">// div.innerHTML = this.html</span></span><br><span class="line">    <span class="comment">// document.body.appendChild(div)</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ProxySingleCreateDiv = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> instance = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">html</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (instance === <span class="literal">null</span>) &#123;</span><br><span class="line">      instance = <span class="keyword">new</span> CreateDiv(html)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> instance</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> ProxySingleCreateDiv(<span class="string">&#x27;AAA&#x27;</span>).init() <span class="comment">// AAA</span></span><br><span class="line"><span class="keyword">new</span> ProxySingleCreateDiv(<span class="string">&#x27;BBB&#x27;</span>).init() <span class="comment">// AAA</span></span><br></pre></td></tr></table></figure>
+<p>代理模式的单例是由一个类包装类一次，函数内部利用闭包保存实例，这样的优点是可以灵活使用<code>ProxySingleCreateDiv</code>和<code>CreateDiv</code>，在不同场景下可以选择多次创建实例还是使用单例</p>
+<h3 id="惰性单例"><a href="#惰性单例" class="headerlink" title="惰性单例"></a>惰性单例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSingle</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> result = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(result)</span><br><span class="line">    <span class="keyword">return</span> result || (result = fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createDiv</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;create div&#x27;</span>)</span><br><span class="line">  <span class="keyword">const</span> divElem = <span class="built_in">document</span>.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">  divElem.innerHTML = <span class="string">&#x27;div元素&#x27;</span></span><br><span class="line">  divElem.style.display = <span class="string">&#x27;none&#x27;</span></span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(divElem)</span><br><span class="line">  <span class="keyword">return</span> divElem</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> createSingleDiv = getSingle(createDiv)</span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">&#x27;btn&#x27;</span>).addEventListener(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> div = createSingleDiv()</span><br><span class="line">  div.style.display = <span class="string">&#x27;block&#x27;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>将实例对象和创建单例对象的方法分开，<code>getSingle</code>函数可以多次利用符合单一原则，当创建<code>createSingleDiv</code>的时候并没有真正执行函数，只是得到了一个被<code>getSingle</code>包装过的函数，当真正使用的时候（click事件）再去创建div，除了可以在click事件里用之外还可以用在其他场景比如</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  createSingleDiv() <span class="comment">// 只要有一个地方创建了div 后续的场景都会获得最开始的</span></span><br><span class="line">&#125;, <span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/03/24/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -200,10 +262,8 @@
 <ol>
 <li>捕获阶段（Capturing phase）—— 事件（从 Window）向下走近元素。</li>
 <li>目标阶段（Target phase）—— 事件到达目标元素。</li>
-<li>冒泡阶段（Bubbling phase）—— 事件从元素上开始冒泡。</li>
+<li>冒泡阶段（Bubbling phase）—— 事件从元素上开始冒泡。<h2 id="冒泡和捕获"><a href="#冒泡和捕获" class="headerlink" title="冒泡和捕获"></a>冒泡和捕获</h2><h3 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h3>当一个事件发生在一个元素上，它会首先运行在该元素上的处理程序，然后运行其父元素上的处理程序，然后一直向上到其他祖先上的处理程序。在event.target是触发事件的元素，this是挂载事件处理函数的元素。<h3 id="停止冒泡"><a href="#停止冒泡" class="headerlink" title="停止冒泡"></a>停止冒泡</h3>可以通过调用event对象内的两个方法停止事件冒泡</li>
 </ol>
-<h2 id="冒泡和捕获"><a href="#冒泡和捕获" class="headerlink" title="冒泡和捕获"></a>冒泡和捕获</h2><h3 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h3><p>当一个事件发生在一个元素上，它会首先运行在该元素上的处理程序，然后运行其父元素上的处理程序，然后一直向上到其他祖先上的处理程序。在event.target是触发事件的元素，this是挂载事件处理函数的元素。</p>
-<h3 id="停止冒泡"><a href="#停止冒泡" class="headerlink" title="停止冒泡"></a>停止冒泡</h3><p>可以通过调用event对象内的两个方法停止事件冒泡</p>
 <ul>
 <li>event.stopPropagation() 停止当前事件处理继续向上传播 不会阻止当前元素的其他事件处理函数</li>
 <li>event.stopImmediatePropagation() 停止当前事件继续向上传播 会阻止当前元素的其他事件处理函数</li>
@@ -797,108 +857,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/" class="post-title-link" itemprop="url">跨源资源共享CORS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-09 19:52:45" itemprop="dateCreated datePublished" datetime="2021-01-09T19:52:45+08:00">2021-01-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-10 18:29:23" itemprop="dateModified" datetime="2021-01-10T18:29:23+08:00">2021-01-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>跨域资源共享（cross-origin resource sharing），是一种基于HTTP头的机制，该机制通过允许服务器标示除了他自己以外的其他的origin（域、协议、端口），这样浏览器可以访问加载这些资源。跨源资源共享还通过一种机制来检查服务器是否会允许要发送的真实请求，该机制通过浏览器发起一个到服务器的跨源资源的预检请求。在预检中，浏览器发送的头中标示有HTTP方法和真实请求会用到的头<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS">MDN 跨源资源共享</a></p>
-</blockquote>
-<p>实现CORS机制的关键是服务器设置，当客户端发起跨源请求时会自动添加一些请求头（如果是复杂请求会先发一次option请求，这种行为叫做CORS预检请求），服务器会根据这些头信息决定是否要处理这次跨源请求。</p>
-<p>客户端发起当请求分为简单请求和复杂请求</p>
-<h2 id="简单请求和预检请求"><a href="#简单请求和预检请求" class="headerlink" title="简单请求和预检请求"></a>简单请求和预检请求</h2><ol>
-<li>此次请求是使用的GET、HEAD或者POST</li>
-<li>HTTP的头信息是以下几种<ul>
-<li>Accept</li>
-<li>Accept-Language</li>
-<li>Content-language</li>
-<li>Last-Event-ID</li>
-<li>Content-Type: 只限于applocation/x-www-form-urlencoded、mutipart/form-data、text/plain</li>
-</ul>
-</li>
-</ol>
-<p>如果满足上述条件就被成为简单请求，如果不满足就是预检请求</p>
-<h2 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h2><p>如果发出去的请求是一个简单请求浏览器会在HTTP请求头中增加一个origin字段，标示当前的源（协议 域名 端口），服务器会根据这个值决定是否处理这个请求。</p>
-<p>浏览器会根据响应头的<code>Access-Control-Allow-Origin</code>字段的值判断服务器是否正常处理了CORS请求</p>
-<h2 id="预检请求"><a href="#预检请求" class="headerlink" title="预检请求"></a>预检请求</h2><p>预检请求需要首先使用OPTIONS方法进行一次通讯，把此次的CORS请求的信息交给服务器检查， 由此决定客户端是否要发起真实的CORS请求。</p>
-<h2 id="附带身份凭证的请求"><a href="#附带身份凭证的请求" class="headerlink" title="附带身份凭证的请求"></a>附带身份凭证的请求</h2><p>一般来说CORS请求不会携带cookie，需要将XMLHttpRequest的withCredentials属性设置为true，请求才会把cookie带上，而服务端则需要在相应头中设置<code>Access-Control-Allow-Credentials: true</code>，如果没有设置，那么请求的响应内容不会返回给发送方。</p>
-<p>对于携带cookie的CORS请求，服务器不可以将<code>Access-Control-Allow-Origin</code>的值设置为<code>*</code>，这是因为请求的首部中携带了 Cookie 信息，如果 Access-Control-Allow-Origin 的值为“*”，请求将会失败。而将 Access-Control-Allow-Origin 的值设置为请求的源，则请求将成功执行。</p>
-<h2 id="CORS机制涉及到的HTTP响应首部字段"><a href="#CORS机制涉及到的HTTP响应首部字段" class="headerlink" title="CORS机制涉及到的HTTP响应首部字段"></a>CORS机制涉及到的HTTP响应首部字段</h2><h3 id="Access-Control-Allow-Origin"><a href="#Access-Control-Allow-Origin" class="headerlink" title="Access-Control-Allow-Origin"></a>Access-Control-Allow-Origin</h3><p>参数值指定了允许访问资源的origin，对于不需要携带cookie的请求可以把该字段设置为<code>*</code>，这表示将接受所有Origin的访问。如果服务端指定了具体的域名，那么响应首部的Vary字段的值必须包含Origin。</p>
-<h3 id="Access-Control-Expose-Headers"><a href="#Access-Control-Expose-Headers" class="headerlink" title="Access-Control-Expose-Headers"></a>Access-Control-Expose-Headers</h3><p>跨源访问时，XMLHttpRequest对象的getResponseHeader()方法只能拿到一些最基本的响应头，Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragme，如果要访问其他的头信息，则需要服务器设置Expose-Headers的值。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Expose-Headers: X-My-Custom-Header, X-Another-Custom-Header</span><br></pre></td></tr></table></figure>
-<p>这样浏览器就能够通过getResponseHeader访问X-My-Custom-Header和 X-Another-Custom-Header 响应头了。</p>
-<h3 id="Access-Control-Max-Age"><a href="#Access-Control-Max-Age" class="headerlink" title="Access-Control-Max-Age"></a>Access-Control-Max-Age</h3><p>用来指定预检请求的结果能够被缓存多久。表示preflight请求的结果在多少秒内有效。</p>
-<h3 id="Access-Control-Allow-Credentials"><a href="#Access-Control-Allow-Credentials" class="headerlink" title="Access-Control-Allow-Credentials"></a>Access-Control-Allow-Credentials</h3><p>一般来说CORS请求不会携带cookie，需要将XMLHttpRequest的withCredentials属性设置为true，请求才会把cookie带上，而服务端则需要在相应头中设置<code>Access-Control-Allow-Credentials: true</code>，如果没有设置，那么请求的响应内容不会返回给发送方。</p>
-<h3 id="Access-Control-Allow-Methods"><a href="#Access-Control-Allow-Methods" class="headerlink" title="Access-Control-Allow-Methods"></a>Access-Control-Allow-Methods</h3><p>Access-Control-Allow-Methods首部字段用于预检请求当响应，其指明了实际请求允许当HTTP方法</p>
-<h3 id="Access-Control-Allow-Headers"><a href="#Access-Control-Allow-Headers" class="headerlink" title="Access-Control-Allow-Headers"></a>Access-Control-Allow-Headers</h3><p>Access-Control-Allow-Headers用于预检请求的响应。其指明了实际请求允许携带的首部字段</p>
-<h2 id="HTTP请求首部字段"><a href="#HTTP请求首部字段" class="headerlink" title="HTTP请求首部字段"></a>HTTP请求首部字段</h2><p>请求的首部字段无须手动设置，当发起跨源请求时浏览器会自动设置这些头信息。</p>
-<h3 id="Origin"><a href="#Origin" class="headerlink" title="Origin"></a>Origin</h3><p>表明预检请求或实际请求的源</p>
-<h3 id="Access-Control-Request-Method"><a href="#Access-Control-Request-Method" class="headerlink" title="Access-Control-Request-Method"></a>Access-Control-Request-Method</h3><p>将实际请求使用的方法告诉服务器</p>
-<h3 id="Access-Control-Request-Headers"><a href="#Access-Control-Request-Headers" class="headerlink" title="Access-Control-Request-Headers"></a>Access-Control-Request-Headers</h3><p>将实际请求所携带的首部字段告诉服务器</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -964,7 +926,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
