@@ -158,6 +158,66 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/16/JavaScript%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96%EF%BC%88currying%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/16/JavaScript%E5%87%BD%E6%95%B0%E6%9F%AF%E9%87%8C%E5%8C%96%EF%BC%88currying%EF%BC%89/" class="post-title-link" itemprop="url">JavaScript函数柯里化（currying）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-16 14:58:19 / Modified: 16:56:12" itemprop="dateCreated datePublished" datetime="2021-01-16T14:58:19+08:00">2021-01-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>js函数柯里化的原理：用闭包把参数保存起来，当参数的数量足够执行函数了，就开始执行函数</p>
+<p>代码示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">curry</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">curried</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (args.length &gt;= func.length) &#123; </span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 如果传入的参数大于或者等于函数的形参个数 直接调用函数</span></span><br><span class="line"><span class="comment">       * 函数的length属性是形参的个数</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">return</span> func.apply(<span class="built_in">this</span>, args)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 返回一个函数用来接受参数</span></span><br><span class="line"><span class="comment">       * 把接受来的参数与上一次的函数合并，传递给curried</span></span><br><span class="line"><span class="comment">       * 利用偏函数，每次调用都会保存上次调用传递的参数，直到参数满足函数形参的个数</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args2</span>) </span>&#123; <span class="comment">// 如果函数执行收集的参数不够就会继续返回偏函数（利用闭包保存函数变量）</span></span><br><span class="line">        <span class="keyword">return</span> curried.apply(<span class="built_in">this</span>, args.concat(args2))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/09/%E8%B7%A8%E6%BA%90%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%ABCORS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -834,74 +894,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2020/06/18/document-referrer%E4%B8%BA%E7%A9%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/18/document-referrer%E4%B8%BA%E7%A9%BA/" class="post-title-link" itemprop="url">document.referrer为空</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-06-18 16:13:03 / Modified: 16:29:29" itemprop="dateCreated datePublished" datetime="2020-06-18T16:13:03+08:00">2020-06-18</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>记录一下今天解决的问题，sdk 的内置属性中有记录来源 url，但是客户今天反馈问题说跳转的页面来源 url 为空，仔细翻阅了一下资料发现 https 的站点跳转 http 的时候 http 站点不会记录<code>document.referrer</code></p>
-<p>记录一下站点没有<code>document.referrer</code>的情况</p>
-<ol>
-<li>直接在浏览器地址栏中输入地址</li>
-<li>从 https 的网站直接进入一个 http 协议的网站</li>
-<li><code>a</code>标签设置<code>rel=&quot;noreferrer&quot;</code>（兼容 IE7+）</li>
-<li><code>meta</code>标签来控制不让浏览器发送<code>referer</code></li>
-</ol>
-<p>也可以使用下面方法 hack</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> referrer = <span class="built_in">document</span>.referrer;</span></span><br><span class="line">  if (!referrer) &#123;</span><br><span class="line"><span class="javascript">    <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">if</span> (<span class="built_in">window</span>.opener) &#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">// IE下如果跨域则抛出权限异常</span></span></span><br><span class="line"><span class="javascript">        <span class="comment">// Safari和Chrome下window.opener.location没有任何属性</span></span></span><br><span class="line"><span class="javascript">        referrer = <span class="built_in">window</span>.opener.location.href;</span></span><br><span class="line">      &#125;</span><br><span class="line"><span class="javascript">    &#125; <span class="keyword">catch</span> (e) &#123;&#125;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -971,7 +963,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
