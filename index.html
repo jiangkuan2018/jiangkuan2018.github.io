@@ -158,6 +158,64 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/04/28/new%E5%85%B3%E9%94%AE%E5%AD%97%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/28/new%E5%85%B3%E9%94%AE%E5%AD%97%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">new关键字实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-28 14:06:26" itemprop="dateCreated datePublished" datetime="2021-04-28T14:06:26+08:00">2021-04-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">new1</span>(<span class="params">constructor, ...args</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> res = <span class="built_in">Object</span>.create(<span class="title">constructor</span>.<span class="title">prototype</span>) // 创建一个空对象，<span class="title">Object</span>.<span class="title">create</span>会以<span class="title">constructor</span>的<span class="title">prototype</span>为原型创建对象</span><br><span class="line">  <span class="title">const</span> <span class="title">ret</span> = <span class="title">constructor</span>.<span class="title">apply</span>(<span class="params">res, args</span>) // 将<span class="title">this</span>指向<span class="title">res</span></span><br><span class="line">  <span class="title">return</span> <span class="title">ret</span> <span class="title">instanceof</span> <span class="title">Object</span> ? <span class="title">ret</span> : <span class="title">res</span> // 处理构造函数的返回值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/04/16/call%E3%80%81apply%E5%92%8Cbind%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -797,67 +855,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/16/webpack%E4%B8%ADloader%E5%92%8Cplugin%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/16/webpack%E4%B8%ADloader%E5%92%8Cplugin%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">webpack中loader和plugin的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-01-16 17:06:31 / Modified: 17:14:45" itemprop="dateCreated datePublished" datetime="2021-01-16T17:06:31+08:00">2021-01-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>loader，它是一个转换器，将A文件进行编译成B文件，比如：将A.less转换为A.css，单纯的文件转换过程。</p>
-<p>plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务 </p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/308#issuecomment-548634513">reference in github</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -927,7 +924,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
