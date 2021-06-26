@@ -158,7 +158,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/16/webpack%E4%B8%ADloader%E5%92%8Cplugin%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/16/webpack%E4%B8%ADloader%E5%92%8Cplugin/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -172,7 +172,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/01/16/webpack%E4%B8%ADloader%E5%92%8Cplugin%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">webpack中loader和plugin的区别</a>
+            <a href="/2021/01/16/webpack%E4%B8%ADloader%E5%92%8Cplugin/" class="post-title-link" itemprop="url">webpack中loader和plugin</a>
         </h2>
 
         <div class="post-meta">
@@ -181,9 +181,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-01-16 17:06:31 / Modified: 17:14:45" itemprop="dateCreated datePublished" datetime="2021-01-16T17:06:31+08:00">2021-01-16</time>
+              <time title="Created: 2021-01-16 17:06:31" itemprop="dateCreated datePublished" datetime="2021-01-16T17:06:31+08:00">2021-01-16</time>
             </span>
 
           
@@ -197,8 +196,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>loader，它是一个转换器，将A文件进行编译成B文件，比如：将A.less转换为A.css，单纯的文件转换过程。</p>
-<p>plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务 </p>
+          <h1 id="loader"><a href="#loader" class="headerlink" title="loader"></a>loader</h1><p>webpack loader最核心的只能是实现内容转换器，将各式各样的资源转换为标准的JavaScript内容格式。</p>
+<h2 id="loader-基础"><a href="#loader-基础" class="headerlink" title="loader 基础"></a>loader 基础</h2><p>loader的通常是一个普通函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source, sourceMap?, data?</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// source 为 loader 的输入，可能是文件内容，也可能是上一个 loader 处理结果</span></span><br><span class="line">  <span class="keyword">return</span> source;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接受三个参数分别为：</p>
+<ol>
+<li>source 资源输入，上一个loader的执行结果</li>
+<li>sourceMap 可选参数</li>
+<li>data 可选参数，需要在loader链中传递的参数<h2 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h2></li>
+</ol>
+<ul>
+<li>return</li>
+<li>this.callback<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.callback(</span><br><span class="line">    <span class="comment">// 异常信息，Loader 正常运行时传递 null 值即可</span></span><br><span class="line">    err: <span class="built_in">Error</span> | <span class="literal">null</span>,</span><br><span class="line">    <span class="comment">// 转译结果</span></span><br><span class="line">    content: string | Buffer,</span><br><span class="line">    <span class="comment">// 源码的 sourcemap 信息</span></span><br><span class="line">    sourceMap?: SourceMap,</span><br><span class="line">    <span class="comment">// 任意需要在 Loader 间传递的值</span></span><br><span class="line">    <span class="comment">// 经常用来传递 ast 对象，避免重复解析</span></span><br><span class="line">    data?: any</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li>异步 <code>const callback = this.async()</code>，获取异步回调函数，然后执行异步任务，结束后调用callback返回转换结果<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2>默认情况下webpack会缓存函数的转换结果，直到资源或者资源依赖发生变化，可以通过<code>this.cachable(false)</code>声明loader的转换结果不缓存<h2 id="上下文与Side-Effect"><a href="#上下文与Side-Effect" class="headerlink" title="上下文与Side Effect"></a>上下文与Side Effect</h2>loader执行过程中的上下文由<code>NormalModule.createLoaderContext</code>函数创建，通过this调用函数触发Effect<h2 id="Loader-链式调用"><a href="#Loader-链式调用" class="headerlink" title="Loader 链式调用"></a>Loader 链式调用</h2>按照配置的顺序<strong>从前到后pitch</strong>，然后再从后到前依次执行。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.less$/i</span>,</span><br><span class="line">        use: [</span><br><span class="line">          <span class="string">&quot;style-loader&quot;</span>,</span><br><span class="line">          <span class="string">&quot;css-loader&quot;</span>,</span><br><span class="line">          <span class="string">&quot;less-loader&quot;</span>,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+此配置在执行的时候会先调用style-loader的pitch函数，然后css-loader、less-loader….直到所有loader的pitch函数调用结束。然后再开始从后向前执行loader函数<h2 id="loader-pitch"><a href="#loader-pitch" class="headerlink" title="loader.pitch"></a>loader.pitch</h2>…<h1 id="plugin"><a href="#plugin" class="headerlink" title="plugin"></a>plugin</h1>plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务 </li>
+</ul>
 <p><a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/308#issuecomment-548634513">reference in github</a></p>
 
       
