@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jiangkuan2018.github.io/2021/07/05/%E5%AD%A6%E4%B9%A0JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/</loc>
+    
+    <lastmod>2021-07-05</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jiangkuan2018.github.io/2021/04/28/new%E5%85%B3%E9%94%AE%E5%AD%97%E5%AE%9E%E7%8E%B0/</loc>
     
     <lastmod>2021-04-28</lastmod>
@@ -165,7 +172,7 @@
 
   <url>
     <loc>https://jiangkuan2018.github.io/</loc>
-    <lastmod>2021-06-26</lastmod>
+    <lastmod>2021-07-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>

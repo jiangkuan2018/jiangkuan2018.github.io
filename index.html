@@ -158,6 +158,82 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/07/05/%E5%AD%A6%E4%B9%A0JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/05/%E5%AD%A6%E4%B9%A0JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/" class="post-title-link" itemprop="url">学习JavaScript模块化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-05 11:01:51" itemprop="dateCreated datePublished" datetime="2021-07-05T11:01:51+08:00">2021-07-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在早起JavaScript语言并没有提供模块化的支持，此举导致模块化的方案主要由开源社区提供或者是利用语言函数作用域的方式做变量隔离作为简易的模块化方式使用。JavaScript语言在服务端和客户端开发都有使用，所以出现了在web端开发使用的模块化方案（AMD&amp;CMD规范）和服务端开发的模块化方案(nodejs commonjs规范)，在后来出现的ES Module规范。</p>
+<h2 id="commonjs规范"><a href="#commonjs规范" class="headerlink" title="commonjs规范"></a>commonjs规范</h2><p>commonjs规范主要在nodejs中使用，最开始是serverJS项目，后来作者想要把此规范推广到浏览器端，所以改成了commonjs。</p>
+<p>commonjs规定了require函数引入模块，使用module和exports导出模块内部的变量。将变量挂在到<code>module.exports</code>上，我觉得nodejs这种方式像是一种hack，利用js函数参数建立模块之间的引用。JavaScript在函数内部操作arguments参数的时候会和外部的变量形成一个浅拷贝，在这里操作导出的对象的时候就会遵循js对象的规律，nodejs在这里还为模块增加了cache机制，把模块代码的执行结果形成了一个缓存（文件路径: exports对象），假设我们引入完模块再次操作模块内部的函数改变导出的变量，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">const</span> m1 = <span class="built_in">require</span>(<span class="string">&#x27;./m1&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> m2 = <span class="built_in">require</span>(<span class="string">&#x27;./m2&#x27;</span>)</span><br><span class="line"><span class="comment">// state.js</span></span><br><span class="line"><span class="keyword">let</span> name = <span class="string">&#x27;jk&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setName</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  name = <span class="string">&#x27;jkkk&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  name,</span><br><span class="line">  setName</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// m1.js</span></span><br><span class="line"><span class="keyword">const</span> state = <span class="built_in">require</span>(<span class="string">&#x27;./state&#x27;</span>)</span><br><span class="line">state.setName(<span class="string">&#x27;jkkk&#x27;</span>)</span><br><span class="line"><span class="comment">// m2.js</span></span><br><span class="line"><span class="keyword">const</span> state = <span class="built_in">require</span>(<span class="string">&#x27;./state&#x27;</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;m2 console&#x27;</span>, state) <span class="comment">// name不会被改变，因为导出的是一个基础类型，赋值给exports对象的时候会开辟一个新的内存空间存储name，再次改变name不会印象已经赋值的对象。</span></span><br></pre></td></tr></table></figure>
+<p>假设state导出的是一个对象是一个引用类型，改变name就会印象到导出的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// state.js</span></span><br><span class="line"><span class="keyword">let</span> person = &#123;</span><br><span class="line">  name: <span class="string">&#x27;jk&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setName</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  person.name = name</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  person,</span><br><span class="line">  setName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把js文件内部的代码用<a target="_blank" rel="noopener" href="https://github.com/nodejs/node/blob/68548fd661f87dbb69fc730e56cfd15ad8c8f9ca/lib/internal/modules/cjs/loader.js#L200">wrapper</a>包裹一遍，包裹的函数参数包含<code>exports, require, module, __filename, __dirname</code>这些变量。然后在利用<a target="_blank" rel="noopener" href="https://nodejs.org/dist/latest-v16.x/docs/api/vm.html#vm_vm_compilefunction_code_params_options"><code>vm.compileFunction</code></a>创建一个可执行函数交给nodejs去执行，在这个执行代码的过程中就会改变函数的参数，从而获得导出的变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wrapper = [</span><br><span class="line">  <span class="string">&#x27;(function (exports, require, module, __filename, __dirname) &#123; &#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;\n&#125;);&#x27;</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h2 id="AMD规范和CMD规范"><a href="#AMD规范和CMD规范" class="headerlink" title="AMD规范和CMD规范"></a>AMD规范和CMD规范</h2><p>这两者都是浏览器模块化的规范，这两种规范的代表实现是require.js和sea.js。最大的区别就是requirejs模块的依赖在顶部声明，依赖会先执行。而sea.js推崇依赖就近执行。在API表现也是如此。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** AMD写法 **/</span></span><br><span class="line">define([<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;f&quot;</span>], <span class="function"><span class="keyword">function</span>(<span class="params">a, b, c, d, e, f</span>) </span>&#123; </span><br><span class="line">     <span class="comment">// 等于在最前面声明并初始化了要用到的所有模块</span></span><br><span class="line">    a.doSomething();</span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="comment">// 即便没用到某个模块 b，但 b 还是提前执行了</span></span><br><span class="line">        b.doSomething()</span><br><span class="line">    &#125; </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** CMD写法 **/</span></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"><span class="built_in">require</span>, <span class="built_in">exports</span>, <span class="built_in">module</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">&#x27;./a&#x27;</span>); <span class="comment">//在需要时申明</span></span><br><span class="line">    a.doSomething();</span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> b = <span class="built_in">require</span>(<span class="string">&#x27;./b&#x27;</span>);</span><br><span class="line">        b.doSomething();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** sea.js **/</span></span><br><span class="line"><span class="comment">// 定义模块 math.js</span></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"><span class="built_in">require</span>, <span class="built_in">exports</span>, <span class="built_in">module</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $ = <span class="built_in">require</span>(<span class="string">&#x27;jquery.js&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a+b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exports</span>.add = add;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 加载模块</span></span><br><span class="line">seajs.use([<span class="string">&#x27;math.js&#x27;</span>], <span class="function"><span class="keyword">function</span>(<span class="params">math</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = math.add(<span class="number">1</span>+<span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="ES6-Module"><a href="#ES6-Module" class="headerlink" title="ES6 Module"></a>ES6 Module</h2><p>JS 引擎对脚本静态分析的时候，遇到模块加载命令import，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。换句话说，ES6 的import有点像 Unix 系统的“符号连接”，原始值变了，import加载的值也会跟着变。因此，ES6 模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。</p>
+<h2 id="ES6-Module与-CommonJS-模块的差异"><a href="#ES6-Module与-CommonJS-模块的差异" class="headerlink" title="ES6 Module与 CommonJS 模块的差异"></a>ES6 Module与 CommonJS 模块的差异</h2><ul>
+<li>CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。</li>
+<li>CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。</li>
+<li>CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。</li>
+</ul>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/#docs/module-loader#ES6-%E6%A8%A1%E5%9D%97%E4%B8%8E-CommonJS-%E6%A8%A1%E5%9D%97%E7%9A%84%E5%B7%AE%E5%BC%82">Module 的加载实现</a><br><a target="_blank" rel="noopener" href="https://github.com/seajs/seajs/issues/277">与 RequireJS 的异同</a><br><a target="_blank" rel="noopener" href="https://github.com/seajs/seajs/issues/588">前端模块化开发那点历史</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903576309858318">前端模块化：CommonJS,AMD,CMD,ES6</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/04/28/new%E5%85%B3%E9%94%AE%E5%AD%97%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -792,69 +868,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/23/%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/23/%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/" class="post-title-link" itemprop="url">防抖和节流</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-01-23 14:43:30 / Modified: 15:28:56" itemprop="dateCreated datePublished" datetime="2021-01-23T14:43:30+08:00">2021-01-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>多次执行事件函数只执行一次，在单位时间内触发的函数不会直接执行，当超过单位时间后再执行一次函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, timeout</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timer) <span class="comment">// cancel上次的定时器然后重新开始计时</span></span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">    &#125;, timeout);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h2><p>在函数持续触发的场景，节流可以控制函数在单位时间内的执行周期。ms参数代表了可以多少毫秒执行一次事件函数</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, ms</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 闭包保存变量</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">let</span> isThtottled = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> saveArgs = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> saveThis = <span class="literal">null</span></span><br><span class="line">  <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">wrapper</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isThtottled) &#123;</span><br><span class="line">      saveArgs = <span class="built_in">arguments</span></span><br><span class="line">      saveThis = <span class="built_in">this</span></span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">      <span class="built_in">clearTimeout</span>(timer)</span><br><span class="line">    &#125;</span><br><span class="line">    fn.apply(<span class="built_in">this</span>, <span class="built_in">arguments</span>) <span class="comment">// 第一次执行直接可以执行事件函数</span></span><br><span class="line">    isThtottled = <span class="literal">true</span> <span class="comment">// 打开标志位</span></span><br><span class="line">    timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123; <span class="comment">// 打开定时器，倒计时执行事件函数</span></span><br><span class="line">      isThtottled = <span class="literal">false</span> <span class="comment">// 关闭定时器</span></span><br><span class="line">      <span class="keyword">if</span> (saveArgs) &#123; <span class="comment">// 事件函数的参数</span></span><br><span class="line">        wrapper.apply(saveThis, saveArgs) <span class="comment">// 关闭标志位然后递归调用</span></span><br><span class="line">        saveArgs = saveThis = <span class="literal">null</span> <span class="comment">// 执行完事件函数释放变量</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, ms);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> wrapper</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -924,7 +937,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
