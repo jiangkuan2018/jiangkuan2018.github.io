@@ -158,6 +158,176 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/07/21/%E9%9D%A2%E8%AF%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jiangkuan">
+      <meta itemprop="description" content="hello">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="揽明月">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/21/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="post-title-link" itemprop="url">面试题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-21 23:41:17" itemprop="dateCreated datePublished" datetime="2021-07-21T23:41:17+08:00">2021-07-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="为什么0-1-0-2-0-3"><a href="#为什么0-1-0-2-0-3" class="headerlink" title="为什么0.1+0.2 !== 0.3"></a>为什么0.1+0.2 !== 0.3</h1><ol>
+<li>因为JavaScript使用了IEEE 754 双精度 64位表示数值。</li>
+<li>在十进制小数转二进制数时会出现尾数无限循环的情况，十进制小数转二进制数规则为：小数位乘以2取整数部分，若乘之后小数不为零，继续取小数部分乘以2取整，直到小数位为0，将取出的整数正向排序。</li>
+<li>在IEEE 754标准中使用64比特位储存数值，其中符号（正负）占1bit，指数部分11bit，尾数部分52bit。当发生无限循环的情况后，会对尾数部分使用就近舍入的模式储存。</li>
+<li>转化为标准长度的二进制数之后进行浮点数运算<ul>
+<li>对阶：判断指数位是否相等，如果不同则需要对阶，尾数右移，指数加1，直到操作符两边的指数相同</li>
+<li>求和：尾数相加，然后进位</li>
+<li>规格化</li>
+</ul>
+</li>
+</ol>
+<h1 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h1><p>跨域访问是一个安全问题，浏览器针对这个问题推出了<strong>同源策略</strong>。限制<strong>跨域请求</strong>和<strong>DOM访问</strong>。<br>如果没有同源策略会就会有CSRF这样的攻击方式</p>
+<h2 id="跨站请求伪造-CSRF-Cross-Site-Request-Forgery"><a href="#跨站请求伪造-CSRF-Cross-Site-Request-Forgery" class="headerlink" title="跨站请求伪造 CSRF Cross-Site Request Forgery"></a>跨站请求伪造 CSRF Cross-Site Request Forgery</h2><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>用户在登录过受信任的网站之后，再去访问了危险的网站，在危险的网站里会发起一个针对信任网站的HTTP请求，这个请求会携带登录之后生成的cookie信息。然后攻击者会在请求参数里完成恶意操作。简化理解为 <strong>攻击者盗用了你的身份，以你的名义发送恶意请求</strong></p>
+<h3 id="规避方法"><a href="#规避方法" class="headerlink" title="规避方法"></a>规避方法</h3><ol>
+<li><p>现代浏览器默认会启用同源策略，默认会阻止B origin向A origin的请求。</p>
+</li>
+<li><p>cookie SameSite 属性可以让 Cookie 在跨站请求时不会被发送，从而可以阻止跨站请求伪造攻（CSRF）。</p>
+<ul>
+<li><code>Strict</code>只允许当前域名的请求携带cookie</li>
+<li><code>Lax</code>允许部分第三方请求携带cookie</li>
+<li><code>None</code>无论是否跨站都会携带cookie</li>
+</ul>
+</li>
+<li><p>检查http请求头信息里面的referrer和origin字段</p>
+</li>
+<li><p>Anti-CSRF tokens，在发送数据时使用随机token验证</p>
+</li>
+<li><p>关键操作使用验证码</p>
+<h2 id="同源策略限制下接口请求的正确打开方式"><a href="#同源策略限制下接口请求的正确打开方式" class="headerlink" title="同源策略限制下接口请求的正确打开方式"></a>同源策略限制下接口请求的正确打开方式</h2><h3 id="1-jsonp"><a href="#1-jsonp" class="headerlink" title="1. jsonp"></a>1. jsonp</h3><p>一些标签比如script、img这样的获取资源的标签是没有跨域限制的。jsonp利用这些标签的src属性发送跨域请求，然后在将返回值在script标签里执行，通过提前挂在全局方法获得返回的数据</p>
+<h3 id="2-跨域资源共享-Cros-Origin-Resource-sharing-CORS"><a href="#2-跨域资源共享-Cros-Origin-Resource-sharing-CORS" class="headerlink" title="2. 跨域资源共享 Cros Origin Resource sharing CORS"></a>2. 跨域资源共享 Cros Origin Resource sharing CORS</h3><p>Server-Side Access Control，允许浏览器向跨域服务器发起请求，从而克服跨域问题，需要浏览器和服务器同是支持。</p>
+</li>
+<li><p>浏览器会在跨域请求头上添加origin字段，标示当前请求来源</p>
+</li>
+<li><p>服务器会在响应头上添加<code>Access-Control-Allow-Origin</code>、<code>Access-Control-Allow-Methods</code>、<code>Access-Control-Allow-Headers</code>用来指定允许的域名方法和头部信息。</p>
+</li>
+<li><p>跨域请求分为简单请求和预检请求</p>
+<ul>
+<li>简单请求直接访问直接返回</li>
+<li>预检请求会先发送一个<code>options</code>请求，”预检请求“的使用，可以避免跨域请求对服务器的用户数据产生未预期的影响。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-代理转发"><a href="#3-代理转发" class="headerlink" title="3. 代理转发"></a>3. 代理转发</h3><p>nginx将请求转发到目标服务器。</p>
+<h2 id="同源策略限制下Dom查询的正确打开方式"><a href="#同源策略限制下Dom查询的正确打开方式" class="headerlink" title="同源策略限制下Dom查询的正确打开方式"></a>同源策略限制下Dom查询的正确打开方式</h2><p>postMessage方法，同一浏览器下tab交互</p>
+<h2 id="XSS攻击"><a href="#XSS攻击" class="headerlink" title="XSS攻击"></a>XSS攻击</h2><p>内容安全策略Content Security Policy(CSP)</p>
+<h1 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h1><p>标准盒模型和IE盒模型，标准盒模型规定border和padding不包含在内容区，而IE盒模型规定border和padding的值包含在内容区域内。</p>
+<h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p>相对于HTTP1.0，HTTP1.1的优化</p>
+<ol>
+<li>Connection默认开始keep-alive</li>
+<li>缓存处理Etag If-Match If-None-Match If-Unmodified-Since<br>相对于HTTP1.1，HTTP2.0的优化</li>
+<li>tcp多路复用</li>
+<li>server push</li>
+<li>HPACK头部压缩</li>
+<li>支持传输二进制数据<h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><h2 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h2></li>
+</ol>
+<p><strong>Expries</strong>：值为GMT绝对时间，表示资源的过期时间。缺点是失效时间是一个绝对时间，如果服务器时间与客户端时间偏差较大时，就会导致缓存混乱</p>
+<p><strong>Cache-Control</strong>：控制缓存的行为。</p>
+<ul>
+<li>max-age=10000 值为相对时间，表示资源的有效时长，单位秒，在有效时长内重复访问资源浏览器会显示状态码200 from dist。</li>
+<li>no-cache 表示浏览器不缓存文件，直接使用协商缓存</li>
+<li>no-store 不缓存，直接使用源服务器文件</li>
+<li>public 可以被所有用户缓存，包括终端用户和 cdn 等中间件代理服务器。</li>
+<li>private 只有终端用户可以缓存</li>
+</ul>
+<h2 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h2><p>当浏览器没有命中强缓存时，浏览器会使用协议缓存与服务器交互。由服务器决定是否使用缓存资源。状态码会时304<br>第一次访问资源时资源响应头里会携带Etag和Last-Modfied，Etag表示资源的哈希值，Last-Modfied表示资源的最后修改时间。</p>
+<p>当再次访问资源时，在请求头里会携带第一次响应头里的Etag和Last-Modified，Etag会使用If-None-Match携带，Last-Modified会使用If-Modified-Since携带。然后由服务器判断头信息的值来决定是否使用缓存。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- Response Header</span><br><span class="line">Etag: W/&quot;4-17abdae0f84&quot;</span><br><span class="line">Last-Modified: Mon, 19 Jul 2021 07:32:18 GMT</span><br><span class="line">- Request Header</span><br><span class="line">If-None-Match: W/&quot;4-17abdae0f84&quot; // Etag的值</span><br><span class="line">If-Modified-Since: Mon, 19 Jul 2021 07:32:18 GMT // Last-Modified的值</span><br></pre></td></tr></table></figure>
+
+<p>如果资源文件已经变化，Etag值或者Last-Modified值会变化，这时候服务器会比对请求头的值，然后使用最新的资源，在响应头里返回最新的Etag和Last-Modified，完成资源更新。下次请求时浏览器携带最新的Etag和Last-Modified。</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>由Cache-Control决定是否使用协商缓存。通过对比文件哈希值和文件最后更改时间决定是否使用最新资源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control &gt; expires &gt; Etag &gt; Last-Modified</span><br></pre></td></tr></table></figure>
+
+<h1 id="回流和重绘"><a href="#回流和重绘" class="headerlink" title="回流和重绘"></a>回流和重绘</h1><h2 id="回流"><a href="#回流" class="headerlink" title="回流"></a>回流</h2><p>Layout(回流)：根据生成的渲染树，进行回流(Layout)，得到节点的几何信息（位置，大小）</p>
+<p><strong>触发回流的操作</strong></p>
+<ol>
+<li>添加或删除元素</li>
+<li>元素位置变化</li>
+<li>元素尺寸变化</li>
+<li>内容变化</li>
+<li>浏览器窗口尺寸变化</li>
+<li>页面开始渲染</li>
+</ol>
+<p><strong>避免回流的的方式</strong></p>
+<ol>
+<li>减少不必要的DOM深度。</li>
+<li>减少CSS的规则数量</li>
+<li>复杂的动画操作使用 position-absolute或者position-fixed。</li>
+<li>避免复杂的CSS选择器 后代选择器。<h2 id="重绘"><a href="#重绘" class="headerlink" title="重绘"></a>重绘</h2>Painting(重绘)：根据渲染树以及回流得到的几何信息，得到节点的绝对像素，回流一定会触发重绘，当元素发生不影响布局的样式变化时，浏览器会将新样式赋予元素，然后重新绘制。</li>
+</ol>
+<p>有时即使仅仅回流一个单一的元素，它的父元素以及任何跟随它的元素也会产生回流。现代浏览器会对频繁的回流或重绘操作进行优化，浏览器会维护一个队列，把所有引起回流和重绘的操作放入队列中，如果队列中的任务数量或者时间间隔达到一个阈值的，浏览器就会将队列清空，进行一次批处理，这样可以把多次回流和重绘变成一次。你访问以下属性或方法时，浏览器会立刻清空队列：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">clientWidth、clientHeight、clientTop、clientLeft</span><br><span class="line">offsetWidth、offsetHeight、offsetTop、offsetLeft</span><br><span class="line">scrollWidth、scrollHeight、scrollTop、scrollLeft</span><br><span class="line">width、height</span><br><span class="line">getComputedStyle()</span><br><span class="line">getBoundingClientRect()</span><br></pre></td></tr></table></figure>
+<p>以上属性和方法都需要返回最新的布局信息，因此浏览器不得不清空队列，触发回流重绘来返回正确的值</p>
+<h1 id="Vue-组件的生命周期"><a href="#Vue-组件的生命周期" class="headerlink" title="Vue 组件的生命周期"></a>Vue 组件的生命周期</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">beforeCreate</span><br><span class="line">created</span><br><span class="line">beforeMounte</span><br><span class="line">mounted</span><br><span class="line">beforeUpdate</span><br><span class="line">updated</span><br><span class="line">beforeDestroy</span><br><span class="line">destroyed</span><br></pre></td></tr></table></figure>
+
+<h1 id="Vue-computed和watch"><a href="#Vue-computed和watch" class="headerlink" title="Vue computed和watch"></a>Vue computed和watch</h1><ol>
+<li>计算属性会被包装成响应式属性，在vm实例上创建一个相同名称的响应式属性，在这个响应式属性的get方法中做计算</li>
+<li>计算属性只有在被访问时才会计算</li>
+<li>计算属性的值的缓存是因为，get函数执行的时候调用了<code>watcher.evaluate</code><h1 id="Vue-Watcher"><a href="#Vue-Watcher" class="headerlink" title="Vue Watcher"></a>Vue Watcher</h1>watcher类型分为三类</li>
+<li>渲染watcher</li>
+<li>计算watcher</li>
+<li>用户watcher</li>
+</ol>
+<h2 id="渲染watcher"><a href="#渲染watcher" class="headerlink" title="渲染watcher"></a>渲染watcher</h2><p>在组件渲染之前会渲染一个watcher用于管理渲染相关的逻辑</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> updateComponent = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    vm._update(vm._render(), hydrating)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建完watcher之后会执行getter函数，这个函数就是上面代码块里的渲染逻辑，当前这个watcher会被参与渲染的变量收集，参数<code>vm._render</code>是由模版解析器创建的，在render函数执行的时候会访问组件实例上的属性，然后触发属性的getter方法收集当前渲染watcher，然后模版数据后续发生变化的话就会触发<code>dep.notify</code>进而触发<code>watcher.update</code>方法将watcher的更新操作交给nextTick，放在异步队列里执行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">anonymous</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 模版解析器创建的render函数</span></span><br><span class="line"><span class="function"><span class="title">with</span>(<span class="params"><span class="built_in">this</span></span>)</span>&#123;<span class="keyword">return</span> _c(<span class="string">&#x27;div&#x27;</span>,&#123;<span class="attr">attrs</span>:&#123;<span class="string">&quot;id&quot;</span>:<span class="string">&quot;root&quot;</span>&#125;&#125;,[_c(<span class="string">&#x27;input&#x27;</span>,&#123;<span class="attr">directives</span>:[&#123;<span class="attr">name</span>:<span class="string">&quot;model&quot;</span>,<span class="attr">rawName</span>:<span class="string">&quot;v-model&quot;</span>,<span class="attr">value</span>:(person.age),<span class="attr">expression</span>:<span class="string">&quot;person.age&quot;</span>&#125;],<span class="attr">attrs</span>:&#123;<span class="string">&quot;type&quot;</span>:<span class="string">&quot;text&quot;</span>&#125;,<span class="attr">domProps</span>:&#123;<span class="string">&quot;value&quot;</span>:(person.age)&#125;,<span class="attr">on</span>:&#123;<span class="string">&quot;input&quot;</span>:<span class="function"><span class="keyword">function</span>(<span class="params">$event</span>)</span>&#123;<span class="keyword">if</span>($event.target.composing)<span class="keyword">return</span>;$set(person, <span class="string">&quot;age&quot;</span>, $event.target.value)&#125;&#125;&#125;)])&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="计算Watcher"><a href="#计算Watcher" class="headerlink" title="计算Watcher"></a>计算Watcher</h2><p>vue将计算属性的key放到vm实例对象上，然后定义的函数会成为这个属性的get函数，在初始化计算属性的时候会创建一个watcher expOrFn参数是用户定义的函数，但是option参数的lazy会变成true，此举会导致new Watcher的时候不调用get函数不会立刻计算。当访问计算属性的时候get函数执行，然后执行用户定义的函数，在这个函数内部会访问相关的数据，然后触发属性的get函数收集当前计算Watcher。</p>
+<p>再次访问计算属性不会重新计算，因为其内部由标志位在控制，只有相关联的属性变化，引起计算Watcher的dirty值发生变化才会重新计算</p>
+<h2 id="用户Watcher"><a href="#用户Watcher" class="headerlink" title="用户Watcher"></a>用户Watcher</h2><p>用户在watch选项上定义的关键函数和手动调用实例的$watch函数创建的watcher。</p>
+<p>初始化watch选项的时候会调用vm原型上的$watch函数，在$watch函数内部会接受watch选项的key和变化需要更新的函数，在创建Watcher的时候expOrFn是字符串，cb为更新的函数，option里的user选项会是true。</p>
+<p>然后Watcher创建，执行get函数，Dep.target为当前watcher。然后被观察的属性会收集当前watcher。然后在属性变化的时候就会执行watch定义的观察方法</p>
+<h1 id="Vue-nextTick"><a href="#Vue-nextTick" class="headerlink" title="Vue nextTick"></a>Vue nextTick</h1><p>nextTick函数并不会立即执行，而是被放进到一个队列中等待。当我们在使用nextTick函数获取dom元素时，获取元素的函数会被添加到一个callbacks中，在这个callbacks中还会存放属性更新引起的watcher更新函数。因为watcher的update函数调用了一个<code>queueWatcher</code>函数，这个函数也会调用nextTick函数去执行更新。因为数据更新是早于用户手动调用nextTick的，所以callbacks里会先有watcher更新，再有用户定义的回调。</p>
+<p>当宏任务执行结束，开始执行微任务的时候（会优先使用微任务，如果不支持就会降级使用<code>setImmediate</code>或者<code>setTimeout</code>）。nextTick创建的callbacks数组就会执行，遍历callbaks数组的时候先执行watcher更新，再执行用户定义的回调，所以就会有nextTick中获取最新dom元素的功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 继承</span><br><span class="line">&#96;&#96;&#96;js</span><br><span class="line">function object(o)&#123;</span><br><span class="line">    function F()&#123;&#125;</span><br><span class="line">    F.prototype &#x3D; o</span><br><span class="line">    return new F()</span><br><span class="line">&#125;</span><br><span class="line">function inherit(child, parent) &#123;</span><br><span class="line">    var prototype &#x3D; object(parent.prototype)</span><br><span class="line">    prototype.constructor &#x3D; child</span><br><span class="line">    child.prototype &#x3D; prototype</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/07/05/%E5%AD%A6%E4%B9%A0JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -809,65 +979,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://jiangkuan2018.github.io/2021/01/27/%E6%A3%80%E6%9F%A5%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E4%B8%BA%E7%A9%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jiangkuan">
-      <meta itemprop="description" content="hello">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="揽明月">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/27/%E6%A3%80%E6%9F%A5%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E4%B8%BA%E7%A9%BA/" class="post-title-link" itemprop="url">检查对象是否为空</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-01-27 16:50:44 / Modified: 16:54:40" itemprop="dateCreated datePublished" datetime="2021-01-27T16:50:44+08:00">2021-01-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isEmpty</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(obj) || <span class="keyword">typeof</span> obj === <span class="string">&#x27;string&#x27;</span> || obj <span class="keyword">instanceof</span> <span class="built_in">String</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.length === <span class="number">0</span> <span class="comment">// 检查数组和字符串类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(obj <span class="keyword">instanceof</span> <span class="built_in">Map</span> || obj <span class="keyword">instanceof</span> <span class="built_in">Set</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.size === <span class="number">0</span> <span class="comment">// 检查Map和Set 类型</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.toString.call(obj) === <span class="string">&#x27;[object Object]&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(obj).length === <span class="number">0</span> <span class="comment">// 检查key的数量</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// 不合法的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -937,7 +1048,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
